@@ -51,6 +51,8 @@
   </body>
   <script>
     document.addEventListener("alpine:init", () => {
+      const baseURL = "http://localhost:8090/api"
+
       if(localStorage.getItem("token")){
         window.location.href = 'pages/rooms.html';
       }
@@ -63,7 +65,7 @@
         async login() {
           try {
             const response = await fetch(
-              "http://localhost:8090/api/collections/users/auth-with-password",
+              `${baseURL}/collections/users/auth-with-password`,
               {
                 method: "POST",
                 headers: {

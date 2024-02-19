@@ -13,7 +13,7 @@
 
 <body class="p-5 block">
   <div class="max-w-[40rem] mx-auto" x-data="user">
-    <div class="pb-2 mb-5 border-b border-gray-300 flex items-center justify-between">
+    <div class="pb-2 mb-5 border-b border-gray-300 flex items-center justify-between" x-init="fetchData()">
       <div class="flex gap-3">
         <a href="/pages/rooms.html" class="btn">Rooms</a>
         <a href="/pages/bookings.html" class="btn">Bookings</a>
@@ -45,13 +45,35 @@
 </body>
 <script>
   document.addEventListener("alpine:init", () => {
+    const baseURL = "http://localhost:8090/api"
+
     const user = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token")
     Alpine.data("user", () => ({
-      avatar: `http://127.0.0.1:8090/api/files/${user.collectionId}/${user.id}/${user.avatar}`,
+      avatar: `${baseURL}/files/${user.collectionId}/${user.id}/${user.avatar}`,
       name: user.name,
       email: user.email,
-      token: token
+      token: token,
+      rooms: [],
+
+      async fetchData() {
+          try {
+            const response = await fetch(
+              `${baseURL}/collections/rooms/records?perPage=100`,
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": token
+                }
+              }
+            );
+            if (response.ok) {
+              const data = await response.json();
+              this.rooms = data.items
+            }
+          } catch (err) {}
+        },
     }));
   });
 </script>
