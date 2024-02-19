@@ -82,11 +82,9 @@
               window.location.href = 'pages/user.html';
             } else {
               this.showError = true;
-              const errorData = await response.json();
-              console.error(errorData.message);
             }
           } catch (err) {
-            console.error(err);
+            this.showError = true;
           }
         },
       }));
