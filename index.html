@@ -52,7 +52,7 @@
   <script>
     document.addEventListener("alpine:init", () => {
       if(localStorage.getItem("token")){
-        window.location.href = 'pages/user.html';
+        window.location.href = 'pages/rooms.html';
       }
 
       Alpine.data("signin", () => ({
@@ -79,7 +79,7 @@
               const user = await response.json();
               localStorage.setItem("user", JSON.stringify(user.record))
               localStorage.setItem("token", user.token)
-              window.location.href = 'pages/user.html';
+              window.location.href = 'pages/rooms.html';
             } else {
               this.showError = true;
             }

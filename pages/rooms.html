@@ -13,24 +13,31 @@
 
 <body class="p-5 block">
   <div class="max-w-[40rem] mx-auto" x-data="user">
-    <div>
-      <div class="text-xl font-semibold pb-2 mb-5 border-b border-gray-300 flex items-center justify-between">
-        <div>
-          Profile
-        </div>
-        <div class="flex gap-3">
-          <a href="/pages/rooms.html" class="btn btn-ghost">Rooms</a>
-        </div>
+    <div class="pb-2 mb-5 border-b border-gray-300 flex items-center justify-between">
+      <div class="flex gap-3">
+        <a href="/pages/rooms.html" class="btn">Rooms</a>
+        <a href="/pages/bookings.html" class="btn">Bookings</a>
       </div>
-      <div class="flex items-center gap-5">
-        <div class="h-40 w-40">
-          <img x-bind:src="avatar" alt="" class="h-40 w-40 object-cover rounded">
-        </div>
-        <div>
-          <div class="text-2xl font-semibold" x-text="name"></div>
-          <div class="flex gap-2">Email: <div class="text-blue-500" x-text="email"></div>
+      <div class="flex gap-3">
+        <button class="btn btn-accent gap-2">
+          <div class="h-5 w-5">
+            <img x-bind:src="avatar" alt="" class="h-5 w-5 object-cover rounded-full">
           </div>
-          <button class="btn btn-error btn-sm mt-3">Sign Out</button>
+          <div x-text="name"></div>
+        </button>
+        <button class="btn btn-error">
+          <i class="gg-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <h1 class="font-semibold pb-5 mb-5 border-b border-gray-300">
+        Room Management
+      </h1>
+      <div class="grid grid-cols-1 gap-3">
+        <div class="flex gap-5">
+          
         </div>
       </div>
     </div>
