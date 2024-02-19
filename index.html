@@ -50,6 +50,31 @@
       Alpine.data("signin", () => ({
         email: "",
         password: "",
+        showLogin: false,
+
+        async init () {
+            // initialize pocketbase
+            this.client = new PocketBase('http://127.0.0.1:8090');
+
+            // capture invalid token
+            this.client.afterSend = function (response, data) {
+              if (response.status === 401) {
+                this.showLogin = true
+              }
+
+              return data
+            }
+
+            // if user is not logged in, show login / signup page
+            if (!window.localStorage.getItem('pocketbase_auth')) {
+              this.showLogin = true
+              return
+            }
+
+            // resume session
+            const auth = JSON.parse(window.localStorage.getItem('pocketbase_auth'))
+            this.client.authStore.save(auth.token, auth.model)
+          },
       }));
     });
   </script>
