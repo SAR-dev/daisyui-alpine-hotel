@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/tailwind.css" />
     <link rel="stylesheet" href="/css/icons.min.css" />
     <script src="/js/alpine.min.js" defer></script>
-    <title>Hotel</title>
+    <title>LodgeLink</title>
   </head>
   <body class="p-5 block">
     <div class="max-w-[40rem] mx-auto" x-data="signin">
@@ -77,9 +77,9 @@
             );
             if (response.ok) {
               const user = await response.json();
-              localStorage.setItem("user", user.record)
+              localStorage.setItem("user", JSON.stringify(user.record))
               localStorage.setItem("token", user.token)
-              window.location.href = 'pages/rooms.html';
+              window.location.href = 'pages/user.html';
             } else {
               this.showError = true;
               const errorData = await response.json();
