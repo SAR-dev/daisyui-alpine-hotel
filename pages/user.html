@@ -1,21 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/tailwind.css" />
-    <link rel="stylesheet" href="/css/icons.min.css" />
-    <script src="/js/alpine.min.js" defer></script>
-    <title>LodgeLink | User</title>
-  </head>
-  <body class="p-5 block">
-    <div class="max-w-[40rem] mx-auto" x-data="user"></div>
-  </body>
-  <script>
-    document.addEventListener("alpine:init", () => {
-      console.log(JSON.parse(localStorage.getItem("user")));
-      Alpine.data("user", () => ({}));
-    });
-  </script>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/tailwind.css" />
+  <link rel="stylesheet" href="/css/icons.min.css" />
+  <script src="/js/alpine.min.js" defer></script>
+  <title>LodgeLink | User</title>
+</head>
+
+<body class="p-5 block">
+  <div class="max-w-[40rem] mx-auto" x-data="user">
+    <div>
+      <div class="text-xl font-semibold pb-2 mb-5 border-b border-gray-300 flex items-center justify-between">
+        <div>
+          Profile
+        </div>
+        <div class="flex gap-3">
+          <a href="/pages/rooms.html" class="btn btn-ghost">Rooms</a>
+        </div>
+      </div>
+      <div class="flex items-center gap-5">
+        <div class="h-40 w-40">
+          <img x-bind:src="avatar" alt="" class="h-40 w-40 object-cover rounded">
+        </div>
+        <div>
+          <div class="text-2xl font-semibold" x-text="name"></div>
+          <div class="flex gap-2">Email: <div class="text-blue-500" x-text="email"></div>
+          </div>
+          <button class="btn btn-error btn-sm mt-3">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  document.addEventListener("alpine:init", () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token")
+    Alpine.data("user", () => ({
+      avatar: `http://127.0.0.1:8090/api/files/${user.collectionId}/${user.id}/${user.avatar}`,
+      name: user.name,
+      email: user.email,
+      token: token
+    }));
+  });
+</script>
+
 </html>

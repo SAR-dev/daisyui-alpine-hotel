@@ -1,76 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/css.gg@2.1.1/icons/icons.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="tailwind.css" />
-    <title>Hotel | Rooms</title>
-  </head>
-  <body class="p-5 block">
-    <div class="max-w-[40rem] mx-auto">
-      <div>
-        <h1 class="text-xl font-semibold pb-5 mb-5 border-b border-gray-300">
-          Room Management
-        </h1>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/tailwind.css" />
+  <link rel="stylesheet" href="/css/icons.min.css" />
+  <script src="/js/alpine.min.js" defer></script>
+  <title>LodgeLink | Rooms</title>
+</head>
+
+<body class="p-5 block">
+  <div class="max-w-[40rem] mx-auto" x-data="user">
+    <div>
+      <div class="text-xl font-semibold pb-2 mb-5 border-b border-gray-300 flex items-center justify-between">
         <div>
-          <div class="text-green-600 font-medium flex gap-3 items-center">
-            <i class="gg-pen"></i>
-            Register New Room
+          Profile
+        </div>
+        <div class="flex gap-3">
+          <a href="/pages/rooms.html" class="btn btn-ghost">Rooms</a>
+        </div>
+      </div>
+      <div class="flex items-center gap-5">
+        <div class="h-40 w-40">
+          <img x-bind:src="avatar" alt="" class="h-40 w-40 object-cover rounded">
+        </div>
+        <div>
+          <div class="text-2xl font-semibold" x-text="name"></div>
+          <div class="flex gap-2">Email: <div class="text-blue-500" x-text="email"></div>
           </div>
-          <div
-            class="
-              grid grid-cols-4
-              gap-5
-              border
-              rounded
-              border-gray-300
-              p-5
-              mt-3
-              mb-5
-            "
-          >
-            <div>
-              <div class="text-sm text-gray-500 mb-1">Room Number</div>
-              <input type="number" class="input input-bordered w-full" />
-            </div>
-            <div>
-              <div class="text-sm text-gray-500 mb-1">Room Type</div>
-              <input type="text" class="input input-bordered w-full" />
-            </div>
-            <div>
-              <div class="text-sm text-gray-500 mb-1">Floor Number</div>
-              <input type="number" class="input input-bordered w-full" />
-            </div>
-            <div>
-              <div class="text-sm text-gray-500 mb-1">Price</div>
-              <input type="number" class="input input-bordered w-full" />
-            </div>
-            <div class="col-span-4">
-              <div class="text-sm text-gray-500 mb-1">Summary</div>
-              <textarea class="textarea textarea-bordered w-full"></textarea>
-            </div>
-            <div class="col-span-4">
-              <div class="text-sm text-gray-500 mb-1">Room Thumbnail URL</div>
-              <input type="text" class="input input-bordered w-full" />
-            </div>
-            <div class="col-span-4">
-              <div class="flex justify-between">
-                <button class="btn btn-warning gap-3">Close</button>
-                <button class="btn btn-primary gap-3">
-                  Submit
-                  <i class="gg-airplane h-5"></i>
-                </button>
-              </div>
-            </div>
-          </div>
+          <button class="btn btn-error btn-sm mt-3">Sign Out</button>
         </div>
       </div>
     </div>
-    <script type="module" src="/src/rooms.js" defer></script>
-  </body>
+  </div>
+</body>
+<script>
+  document.addEventListener("alpine:init", () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token")
+    Alpine.data("user", () => ({
+      avatar: `http://127.0.0.1:8090/api/files/${user.collectionId}/${user.id}/${user.avatar}`,
+      name: user.name,
+      email: user.email,
+      token: token
+    }));
+  });
+</script>
+
 </html>
