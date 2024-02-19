@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/css.gg@2.1.1/icons/icons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="tailwind.css" />
+    <title>Vite App</title>
+  </head>
+  <body class="p-5 block">
+    <div class="max-w-[40rem] mx-auto">
+      <div>
+        <h1 class="text-xl font-semibold pb-5 mb-5 border-b border-gray-300">
+          Authentication
+        </h1>
+        <div class="grid grid-cols-2 gap-5">
+          <div
+            class="
+              text-center
+              bg-gray-100
+              rounded
+              p-3
+              flex flex-col
+              justify-center
+              gap-3
+            "
+          >
+            <div>
+              <span class="text-2xl">🤗</span> <br />Welcome to Admin System.
+              Please Sign In to continue.
+            </div>
+          </div>
+          <div class="flex flex-col gap-3">
+            <input
+              type="text"
+              placeholder="Email"
+              class="input input-bordered w-full"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              class="input input-bordered w-full"
+            />
+            <button class="btn btn-primary">Sign In</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/index.js" defer></script>
+  </body>
+</html>
