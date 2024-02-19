@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="/css/tailwind.css" />
     <link rel="stylesheet" href="/css/icons.min.css" />
     <script src="/js/alpine.min.js" defer></script>
-    <script src="/js/pocketbase.umd.js" defer></script>
     <title>Hotel</title>
   </head>
   <body class="p-5 block">
@@ -26,7 +25,6 @@
             </div>
           </div>
           <div class="flex flex-col gap-3">
-            <span x-text="email"></span>
             <input
               type="text"
               placeholder="Email"
@@ -39,7 +37,13 @@
               class="input input-bordered w-full"
               x-model="password"
             />
-            <button class="btn btn-primary">Sign In</button>
+            <button class="btn btn-primary" @click="login">Sign In</button>
+          </div>
+          <div class="col-span-2" x-show="showError">
+            <div role="alert" class="alert alert-error">
+              <i class="gg-info"></i>
+              <span>Sign in failed</span>
+            </div>
           </div>
         </div>
       </div>
@@ -47,34 +51,44 @@
   </body>
   <script>
     document.addEventListener("alpine:init", () => {
+      if(localStorage.getItem("token")){
+        window.location.href = 'pages/rooms.html';
+      }
+
       Alpine.data("signin", () => ({
         email: "",
         password: "",
-        showLogin: false,
+        showError: false,
 
-        async init () {
-            // initialize pocketbase
-            this.client = new PocketBase('http://127.0.0.1:8090');
-
-            // capture invalid token
-            this.client.afterSend = function (response, data) {
-              if (response.status === 401) {
-                this.showLogin = true
+        async login() {
+          try {
+            const response = await fetch(
+              "http://localhost:8090/api/collections/users/auth-with-password",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  identity: this.email,
+                  password: this.password,
+                }),
               }
-
-              return data
+            );
+            if (response.ok) {
+              const user = await response.json();
+              localStorage.setItem("user", user.record)
+              localStorage.setItem("token", user.token)
+              window.location.href = 'pages/rooms.html';
+            } else {
+              this.showError = true;
+              const errorData = await response.json();
+              console.error(errorData.message);
             }
-
-            // if user is not logged in, show login / signup page
-            if (!window.localStorage.getItem('pocketbase_auth')) {
-              this.showLogin = true
-              return
-            }
-
-            // resume session
-            const auth = JSON.parse(window.localStorage.getItem('pocketbase_auth'))
-            this.client.authStore.save(auth.token, auth.model)
-          },
+          } catch (err) {
+            console.error(err);
+          }
+        },
       }));
     });
   </script>
