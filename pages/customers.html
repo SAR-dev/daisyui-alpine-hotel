@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="/css/tailwind.css" />
   <link rel="stylesheet" href="/css/icons.min.css" />
   <script src="/js/alpine.min.js" defer></script>
-  <title>LodgeLink | Bookings</title>
+  <title>LodgeLink | Customers</title>
 </head>
 
 <body class="p-5 block">
@@ -35,9 +35,9 @@
 
     <div>
       <h1 class="font-semibold pb-5 mb-5 border-b border-gray-300">
-        Booking Management
+        Customer Management
       </h1>
-      <!-- Booking List HTML -->
+      <!-- Customer List HTML -->
       <div class="relative overflow-x-auto border">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -57,46 +57,18 @@
               <th scope="col" class="p-2">
                 Address
               </th>
-              <th scope="col" class="p-2">
-                Staff Name
-              </th>
-              <th scope="col" class="p-2">
-              Staff Phone
-              </th>
-              <th scope="col" class="p-2">
-                Check in
-              </th>
-              <th scope="col" class="p-2">
-                Check Out
-              </th>
-              <th scope="col" class="p-2">
-                Number Of person
-              </th>
-              <th scope="col" class="p-2">
-                Room Numbers
-              </th>
-              <th scope="col" class="p-2">
-                Total Price
-              </th>
             </tr>
           </thead>
           <tbody>
-            <template x-for="booking in data">
+            <template x-for="customer in data">
               <tr class="bg-white border-b">
                 <td class="p-2">
-                  <img x-bind:src="booking.expand.customer_id.thumbnail" class="h-8 w-8 rounded object-cover" alt="">
+                  <img x-bind:src="customer.thumbnail" class="h-8 w-8 rounded object-cover" alt="">
                 </td>
-                <th scope="row" class="p-2" x-text="booking.expand.customer_id.name"></th>
-                <td class="p-2" x-text="booking.expand.customer_id.phone_no"></td>
-                <td class="p-2" x-text="booking.expand.customer_id.email"></td>
-                <td class="p-2" x-text="booking.expand.customer_id.address"></td>
-                <td class="p-2" x-text="booking.expand.staff_id.name"></td>
-                <td class="p-2" x-text="booking.expand.staff_id.phone_no"></td>
-                <td class="p-2" x-text="booking.check_in_at"></td>
-                <td class="p-2" x-text="booking.check_out_at"></td>
-                <td class="p-2" x-text="booking.no_of_persons"></td>
-                <td class="p-2" x-text="booking.expand.room_ids.map(e => e.room_no).join(',')"></td>
-                <td class="p-2" x-text="booking.expand.room_ids.map(e => e.price).reduce((partialSum, a) => partialSum + a, 0)"></td>
+                <th scope="row" class="p-2" x-text="customer.name"></th>
+                <td class="p-2" x-text="customer.phone_no"></td>
+                <td class="p-2" x-text="customer.email"></td>
+                <td class="p-2" x-text="customer.address"></td>
               </tr>
             </template>
           </tbody>
@@ -125,7 +97,7 @@
       async fetchData() {
         try {
           const response = await fetch(
-            `${baseURL}/collections/bookings/records?perPage=100&expand=customer_id,room_ids,staff_id`,
+            `${baseURL}/collections/customers/records?perPage=100`,
             {
               method: "GET",
               headers: {
@@ -145,17 +117,3 @@
 </script>
 
 </html>
-
-
-<!-- https://playcode.io/1790154 -->
-
-<!-- const data = [
-  {id: 1, room_no: 201, price: 100},
-  {id: 1, room_no: 202, price: 100},
-  {id: 1, room_no: 203, price: 100},
-  {id: 1, room_no: 204, price: 100},
-  {id: 1, room_no: 205, price: 100},
-]
-
-console.log(data.map(e => e.room_no).join(","))
-console.log(data.map(e => e.price).reduce((partialSum, a) => partialSum + a, 0)) -->

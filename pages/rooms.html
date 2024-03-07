@@ -12,11 +12,13 @@
 </head>
 
 <body class="p-5 block">
-  <div class="max-w-[40rem] mx-auto" x-data="user">
+  <div class="max-w-[60rem] mx-auto" x-data="user">
     <div class="pb-2 mb-5 border-b border-gray-300 flex items-center justify-between" x-init="fetchData()">
       <div class="flex gap-3">
         <a href="/pages/rooms.html" class="btn">Rooms</a>
+        <a href="/pages/customers.html" class="btn">Customers</a>
         <a href="/pages/bookings.html" class="btn">Bookings</a>
+        <a href="/pages/staffs.html" class="btn">Staffs</a>
       </div>
       <div class="flex gap-3">
         <button class="btn btn-accent gap-2">
@@ -25,7 +27,7 @@
           </div>
           <div x-text="name"></div>
         </button>
-        <button class="btn btn-error">
+        <button class="btn btn-error" x-on:click="logout()">
           <i class="gg-chevron-right"></i>
         </button>
       </div>
@@ -35,11 +37,51 @@
       <h1 class="font-semibold pb-5 mb-5 border-b border-gray-300">
         Room Management
       </h1>
-      <div class="grid grid-cols-1 gap-3">
-        <div class="flex gap-5">
-          
-        </div>
+      <!-- Rooms List HTML -->
+      <div class="relative overflow-x-auto border">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+            <tr>
+              <th scope="col" class="p-2">
+                Room No
+              </th>
+              <th scope="col" class="p-2">
+                Room Type
+              </th>
+              <th scope="col" class="p-2">
+                Photo
+              </th>
+              <th scope="col" class="p-2">
+                Price
+              </th>
+              <th scope="col" class="p-2">
+                Floor No
+              </th>
+              <th scope="col" class="p-2">
+                Availability
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <template x-for="room in data">
+              <tr class="bg-white border-b">
+                <th scope="row" class="p-2" x-text="room.room_no"></th>
+                <td class="p-2" x-text="room.room_type"></td>
+                <td class="p-2">
+                  <img x-bind:src="room.thumbnail" class="h-8 w-8 rounded object-cover" alt="">
+                </td>
+                <td class="p-2" x-text="room.price"></td>
+                <td class="p-2" x-text="room.floor_no"></td>
+                <td class="p-2">
+                  <div x-show="room.available">Available</div>
+                  <div x-show="!room.available">Unavailable</div>
+                </td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
       </div>
+
     </div>
   </div>
 </body>
@@ -54,26 +96,29 @@
       name: user.name,
       email: user.email,
       token: token,
-      rooms: [],
-
+      data: [],
+      logout: () => {
+        localStorage.clear()
+        window.location.href="/"
+      },
       async fetchData() {
-          try {
-            const response = await fetch(
-              `${baseURL}/collections/rooms/records?perPage=100`,
-              {
-                method: "GET",
-                headers: {
-                  "Content-Type": "application/json",
-                  "Authorization": token
-                }
+        try {
+          const response = await fetch(
+            `${baseURL}/collections/rooms/records?perPage=100`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": token
               }
-            );
-            if (response.ok) {
-              const data = await response.json();
-              this.rooms = data.items
             }
-          } catch (err) {}
-        },
+          );
+          if (response.ok) {
+            const data = await response.json();
+            this.data = data.items
+          }
+        } catch (err) { }
+      },
     }));
   });
 </script>
